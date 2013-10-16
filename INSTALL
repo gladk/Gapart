@@ -1,0 +1,8 @@
+To compile/install Gapart following packages are required:
+- Cmake
+- gcc/clang
+- Eigen3
+- Boost (program_options filesystem system regex iostreams)
+- VTK
+
+The procedure is standard for all cmake-projects.
