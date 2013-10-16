@@ -1,4 +1,4 @@
-Gapart is the programm to modify particle-pack-files for DEM-simulations.
+Gapart is the program to modify particle-pack-files for DEM-simulations.
 It can accept as input file:
 - liggghts-dump files;
 - liggghts input-files;
