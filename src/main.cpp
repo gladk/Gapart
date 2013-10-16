@@ -1,6 +1,6 @@
 /*
     This file is part of Gapart.
-    Gapart is the programm to modify particle-pack-files for DEM-simulations.
+    Gapart is the program to modify particle-pack-files for DEM-simulations.
     Copyright (C) 2013 TU Bergakademie Freiberg, Institute for Mechanics and Fluid Dynamics
 
     Author: 2013, Anton Gladky <gladky.anton@gmail.com>
