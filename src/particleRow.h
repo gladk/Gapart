@@ -39,6 +39,7 @@ class particleRow {
     bool _sizeCalculate, _sizeCalculateUpd;
     Eigen::Vector3d _center, _extends, _centerUpd, _extendsUpd;
     std::vector <std::shared_ptr<particle> > _minP, _maxP, _minPUpd, _maxPUpd;
+    std::vector <int> _types;
   
   public:
     particleRow();
@@ -55,7 +56,7 @@ class particleRow {
     void markParticlesXYZ(Eigen::Vector3i markBool, Eigen::Vector3d markLength, int setType, double markCylZ);
     void markParticlesCylZ(double markCylZ, int setType);
     unsigned long long size() {return _allPart.size();}; 
-    std::vector <unsigned long long > types(); 
+    std::vector <int> types(); 
     unsigned long long sizeUpd() {return _allPartUpd.size();};
     std::shared_ptr<particle> getPart(unsigned long long id);
     std::shared_ptr<particle> getPartUpd(unsigned long long id);

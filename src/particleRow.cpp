@@ -40,6 +40,9 @@ particleRow::particleRow() {
 void particleRow::addP(std::shared_ptr<particle> part ) {
   _allPart.push_back(part);
   _sizeCalculate = false;
+  if (not(std::find(_types.begin(), _types.end(), part->type()) != _types.end())) {
+    _types.push_back(part->type());
+  }
 };
 
 void particleRow::createUpdArray() {
@@ -171,6 +174,8 @@ void particleRow::type(int setType) {
     }
   }
   _sizeCalculateUpd = false;
+  _types.clear();
+  _types.push_back(setType);
 };
 
 void particleRow::createLayers(Eigen::Vector3i numL, Eigen::Vector3d shiftL){
@@ -267,13 +272,7 @@ bool particleRow::markCylZDo(std::shared_ptr<particle> p, double & markCylZ) {
      }
 };
 
-std::vector <unsigned long long > particleRow::types()  {
-  std::vector <unsigned long long > _types;
-  BOOST_FOREACH(std::shared_ptr<particle> p, _allPartUpd) {
-    if (not(std::find(_types.begin(), _types.end(), p->type()) != _types.end())) {
-      _types.push_back(p->type());
-    }
-  }
+std::vector <int> particleRow::types()  {
   return _types;
 };
 
