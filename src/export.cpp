@@ -57,6 +57,25 @@ void exportclass::LiggghtsIN() {
   Lig.close();
 };
 
+void exportclass::YADE() {
+  stringstream ss;
+  //================================================
+  
+  std::string _fileNameOut;
+  _fileNameOut = _cfg->FNameO();
+  _fileNameOut += ".yade";
+  
+  ofstream Yade (_fileNameOut.c_str());
+  Yade << "#Yade x_y_z_r_matID input-file" << '\n';
+  
+  for (unsigned long long z = 0; z<_particleRow->sizeUpd(); z++) {
+    std::shared_ptr<particle> p = _particleRow->getPartUpd(z);
+    Yade << p->c()(0) << " " << p->c()(1)<< " " << p->c()(2) << " " << p->rad() << " " << p->type() <<'\n';
+  }
+  
+  Yade.close();
+};
+
 void exportclass::VTK() {
   ofstream fileVTK;
   std::string _fileNameVTU;

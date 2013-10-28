@@ -82,6 +82,12 @@ bulk::bulk(std::shared_ptr<configopt> cfg) {
     std::cout<<"Creating vtk-file "<<std::endl;
     exp->VTK();
   }
+  
+  if (_cfg->YADE())  {
+    std::cout<<"Creating yade-file "<<std::endl;
+    exp->YADE();
+  }
+  
   exp->LiggghtsIN();
 };
 
