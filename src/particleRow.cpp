@@ -267,3 +267,13 @@ bool particleRow::markCylZDo(std::shared_ptr<particle> p, double & markCylZ) {
      }
 };
 
+std::vector <unsigned long long > particleRow::types()  {
+  std::vector <unsigned long long > _types;
+  BOOST_FOREACH(std::shared_ptr<particle> p, _allPartUpd) {
+    if (not(std::find(_types.begin(), _types.end(), p->type()) != _types.end())) {
+      _types.push_back(p->type());
+    }
+  }
+  return _types;
+};
+

@@ -38,7 +38,7 @@ void exportclass::LiggghtsIN() {
   ofstream Lig (_fileNameOut.c_str());
   Lig << "LIGGGHTS Description\n\n";
   Lig << _particleRow->sizeUpd() << " atoms\n";
-  Lig << "1 atom types\n\n";       //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~!!!!!!!!!!!!!
+  Lig << _particleRow->types().size() << " atom types\n\n";       //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~!!!!!!!!!!!!!
   Lig << _particleRow->centerUpd()(0) - _particleRow->extendsUpd()(0) << " " << _particleRow->centerUpd()(0) + _particleRow->extendsUpd()(0) << " xlo xhi\n";
   Lig << _particleRow->centerUpd()(1) - _particleRow->extendsUpd()(1) << " " << _particleRow->centerUpd()(1) + _particleRow->extendsUpd()(1) << " ylo yhi\n";
   Lig << _particleRow->centerUpd()(2) - _particleRow->extendsUpd()(2) << " " << _particleRow->centerUpd()(2) + _particleRow->extendsUpd()(2) << " zlo zhi\n\nAtoms\n\n";

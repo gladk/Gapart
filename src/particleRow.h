@@ -55,6 +55,7 @@ class particleRow {
     void markParticlesXYZ(Eigen::Vector3i markBool, Eigen::Vector3d markLength, int setType, double markCylZ);
     void markParticlesCylZ(double markCylZ, int setType);
     unsigned long long size() {return _allPart.size();}; 
+    std::vector <unsigned long long > types(); 
     unsigned long long sizeUpd() {return _allPartUpd.size();};
     std::shared_ptr<particle> getPart(unsigned long long id);
     std::shared_ptr<particle> getPartUpd(unsigned long long id);
