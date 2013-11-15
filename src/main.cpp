@@ -42,6 +42,7 @@ This program comes with ABSOLUTELY NO WARRANTY.\n\
   bool setLIGGGHTS = true;
   double setScale = 1.0;
   int setClearType = -1;
+  double setDensity = -1;
   Eigen::Vector3d setMove = Eigen::Vector3d::Zero();
   Eigen::Vector3i setLayer = Eigen::Vector3i::Zero();
   Eigen::Vector3d setCutPlus = Eigen::Vector3d::Zero();
@@ -68,6 +69,7 @@ This program comes with ABSOLUTELY NO WARRANTY.\n\
       ("type,t", po::value<string>()->default_value("liggghts-dump1"), "type of particle input file, liggghts-dump1 by default. Possible values: liggghts-dump1, liggghts-in1, utwente1")
       ("scale,s", po::value<double>()->default_value(1.0), "scale particles including distance from center of bulk")
       ("clear,c", po::value<int>()->default_value(-1), "clear types of particles, set them 1, if nothing more detected. This parameter is used to set types for mark-options. In this case particles will not be cleared")
+      ("density,d", po::value<double>()->default_value(-1), "set density of all particles")
       ("moveX", po::value<double>()->default_value(0.0), "move particles along X-coord, ignored if layer* are defined")
       ("moveY", po::value<double>()->default_value(0.0), "move particles along Y-coord, ignored if layer* are defined")
       ("moveZ", po::value<double>()->default_value(0.0), "move particles along Z-coord, ignored if layer* are defined")
@@ -202,6 +204,13 @@ This program comes with ABSOLUTELY NO WARRANTY.\n\
       }
     }
     
+    if (vm.count("density"))  {
+      setDensity = vm["density"].as<double>();
+      if (setDensity>=0) {
+        cout << "all particles will have density: "<< setDensity<<std::endl;
+      }
+    }
+
     if (vm.count("markCylZ"))  {
       cout << "particles will be marked as a cylinder with given radius "<< vm["markCylZ"].as<double>() << " along Z-coordinate" << std::endl;
       setMarkCylZ = vm["markCylZ"].as<double>();
@@ -255,11 +264,11 @@ This program comes with ABSOLUTELY NO WARRANTY.\n\
   
   std::shared_ptr<configopt> configParams;
   if (curTypeParticleFile == liggghtsDump1) {
-    configParams = std::shared_ptr<configopt> (new configopt(Eigen::Vector3d::Zero(), 4, 10, 1, 2, 4, 19, 27, 1.0, setVtk, setYADE, setLIGGGHTS, particlesFileNameI, particlesFileNameO, setScale, setClearType, setMove, setLayer, setCutPlus, setCutMinus, setCutPlusB, setCutMinusB, setMarkPlus, setMarkMinus, setMarkPlusB, setMarkMinusB, setMarkCylZ));
+    configParams = std::shared_ptr<configopt> (new configopt(Eigen::Vector3d::Zero(), 4, 10, 1, 2, 4, 19, 27, 1.0, setVtk, setYADE, setLIGGGHTS, particlesFileNameI, particlesFileNameO, setScale, setClearType, setMove, setLayer, setCutPlus, setCutMinus, setCutPlusB, setCutMinusB, setMarkPlus, setMarkMinus, setMarkPlusB, setMarkMinusB, setMarkCylZ, setDensity));
   } else if (curTypeParticleFile == liggghtsIn1) {
-    configParams = std::shared_ptr<configopt> (new configopt(Eigen::Vector3d::Zero(), -1, 12, 1, 2, 5, 3, 4, 0.5,  setVtk, setYADE, setLIGGGHTS, particlesFileNameI, particlesFileNameO, setScale, setClearType, setMove, setLayer, setCutPlus, setCutMinus, setCutPlusB, setCutMinusB, setMarkPlus, setMarkMinus, setMarkPlusB, setMarkMinusB, setMarkCylZ));
+    configParams = std::shared_ptr<configopt> (new configopt(Eigen::Vector3d::Zero(), -1, 12, 1, 2, 5, 3, 4, 0.5,  setVtk, setYADE, setLIGGGHTS, particlesFileNameI, particlesFileNameO, setScale, setClearType, setMove, setLayer, setCutPlus, setCutMinus, setCutPlusB, setCutMinusB, setMarkPlus, setMarkMinus, setMarkPlusB, setMarkMinusB, setMarkCylZ, setDensity));
   } else if (curTypeParticleFile == utwente1) {
-    configParams = std::shared_ptr<configopt> (new configopt(Eigen::Vector3d::Zero(), -1, 15, -1, -1, 1, 7, -1, 1.0,  setVtk, setYADE, setLIGGGHTS, particlesFileNameI, particlesFileNameO, setScale, setClearType, setMove, setLayer, setCutPlus, setCutMinus, setCutPlusB, setCutMinusB, setMarkPlus, setMarkMinus, setMarkPlusB, setMarkMinusB, setMarkCylZ));
+    configParams = std::shared_ptr<configopt> (new configopt(Eigen::Vector3d::Zero(), -1, 15, -1, -1, 1, 7, -1, 1.0,  setVtk, setYADE, setLIGGGHTS, particlesFileNameI, particlesFileNameO, setScale, setClearType, setMove, setLayer, setCutPlus, setCutMinus, setCutPlusB, setCutMinusB, setMarkPlus, setMarkMinus, setMarkPlusB, setMarkMinusB, setMarkCylZ, setDensity));
   } else {
     std::cerr<<"Unknown type of particle file."<<std::endl;
     exit (EXIT_FAILURE);

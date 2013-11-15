@@ -56,6 +56,7 @@ class configopt {
     // Action
     double _scale;             // If particles need to be scaled;
     int _clearType;            // Set the type of all particles
+    double _setDensity;        // Set the density of all particles
     Eigen::Vector3d _move;     // Move particles
     Eigen::Vector3i _layer;    // Particle layers
     Eigen::Vector3d _cutPlus;  // Cut particles, positive direction
@@ -78,7 +79,7 @@ class configopt {
               Eigen::Vector3i cutPlusB, Eigen::Vector3i cutMinusB,
                      Eigen::Vector3d markPlus, Eigen::Vector3d markMinus,
                      Eigen::Vector3i markPlusB, Eigen::Vector3i markMinusB,
-                     double markCylZ
+                     double markCylZ, double setDensity
                      );
               
     Eigen::Vector3d get_c(){return _c;};
@@ -101,6 +102,7 @@ class configopt {
     std::string FNameO() {return _FNameO;}
     double scale() {return _scale;}
     int clearType() {return _clearType;}
+    double setDensity() {return _setDensity;}
     Eigen::Vector3d move() {return _move;}
     Eigen::Vector3i layer() {return _layer;}
     double radFactor() {return _radFactor;}

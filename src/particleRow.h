@@ -50,6 +50,7 @@ class particleRow {
     void scale(double scaleFactor);
     void move(Eigen::Vector3d shift);
     void type(int setType);
+    void density(double setDensity);
     void createUpdArray();
     void createLayers(Eigen::Vector3i numL, Eigen::Vector3d shiftL);
     void cutParticlesXYZ(Eigen::Vector3i cutBool, Eigen::Vector3d cutLength);

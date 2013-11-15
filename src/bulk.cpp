@@ -71,7 +71,12 @@ bulk::bulk(std::shared_ptr<configopt> cfg) {
     std::cout<<"Setting type of particles: "<<_cfg->clearType()<<std::endl;
     _particleLoaded->type(_cfg->clearType());
   }
-  
+
+  if (_cfg->setDensity() >= 0 ) {
+    std::cout<<"Setting density of particles: "<<_cfg->setDensity()<<std::endl;
+    _particleLoaded->density(_cfg->setDensity());
+  }
+
   if (_cfg->markCylZ()>0.0 and _cfg->markPlusB().norm()==0 and _cfg->markMinusB().norm()==0 ) {
     _particleLoaded->markParticlesCylZ(_cfg->markCylZ(), _cfg->clearType());
   }

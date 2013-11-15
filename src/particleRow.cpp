@@ -178,6 +178,14 @@ void particleRow::type(int setType) {
   _types.push_back(setType);
 };
 
+void particleRow::density(double density) {
+  if (_allPart.size()>0) {
+    BOOST_FOREACH(std::shared_ptr<particle> p, _allPartUpd) {
+      p->density(density);
+    }
+  }
+};
+
 void particleRow::createLayers(Eigen::Vector3i numL, Eigen::Vector3d shiftL){
   for (unsigned short int d = 0; d < 3; d++) {
     if (numL(d) > 1) {

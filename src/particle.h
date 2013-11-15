@@ -48,5 +48,7 @@ class particle {
     void c(Eigen::Vector3d c) {_c=c;}
     
     double vol() { return 4.0/3.0*M_PI*_rad*_rad*_rad;};
+
     double density() {return _d;};
+    void density(double d) {_d=d;};
 };
