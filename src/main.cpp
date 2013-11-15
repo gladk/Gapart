@@ -65,7 +65,7 @@ This program comes with ABSOLUTELY NO WARRANTY.\n\
       ("vtk,v", "create VTK-file, OFF by default")
       ("yade,y", "create YADE-file, OFF by default")
       ("liggghts,l", "create LIGGGHTS-file, ON by default")
-      ("type,t", po::value<string>()->default_value("liggghts-dump1"), "type of particle input file, liggghts-dump1 by default. Possible values: liggghts-dump1, liggghts-in1")
+      ("type,t", po::value<string>()->default_value("liggghts-dump1"), "type of particle input file, liggghts-dump1 by default. Possible values: liggghts-dump1, liggghts-in1, utwente1")
       ("scale,s", po::value<double>()->default_value(1.0), "scale particles including distance from center of bulk")
       ("clear,c", po::value<int>()->default_value(-1), "clear types of particles, set them 1, if nothing more detected. This parameter is used to set types for mark-options. In this case particles will not be cleared")
       ("moveX", po::value<double>()->default_value(0.0), "move particles along X-coord, ignored if layer* are defined")
@@ -138,6 +138,8 @@ This program comes with ABSOLUTELY NO WARRANTY.\n\
         curTypeParticleFile = liggghtsDump1;
       } else if (vm["type"].as<string>()=="liggghts-in1") {
         curTypeParticleFile = liggghtsIn1;
+      } else if (vm["type"].as<string>()=="utwente1") {
+        curTypeParticleFile = utwente1;
       } else {
         cout << "type of particle file is has unknown type, use `-t` option for that or `--help` for help.\n"; 
         exit (EXIT_FAILURE);
@@ -256,6 +258,8 @@ This program comes with ABSOLUTELY NO WARRANTY.\n\
     configParams = std::shared_ptr<configopt> (new configopt(Eigen::Vector3d::Zero(), 4, 10, 1, 2, 4, 19, 27, 1.0, setVtk, setYADE, setLIGGGHTS, particlesFileNameI, particlesFileNameO, setScale, setClearType, setMove, setLayer, setCutPlus, setCutMinus, setCutPlusB, setCutMinusB, setMarkPlus, setMarkMinus, setMarkPlusB, setMarkMinusB, setMarkCylZ));
   } else if (curTypeParticleFile == liggghtsIn1) {
     configParams = std::shared_ptr<configopt> (new configopt(Eigen::Vector3d::Zero(), -1, 12, 1, 2, 5, 3, 4, 0.5,  setVtk, setYADE, setLIGGGHTS, particlesFileNameI, particlesFileNameO, setScale, setClearType, setMove, setLayer, setCutPlus, setCutMinus, setCutPlusB, setCutMinusB, setMarkPlus, setMarkMinus, setMarkPlusB, setMarkMinusB, setMarkCylZ));
+  } else if (curTypeParticleFile == utwente1) {
+    configParams = std::shared_ptr<configopt> (new configopt(Eigen::Vector3d::Zero(), -1, 15, -1, -1, 1, 7, -1, 1.0,  setVtk, setYADE, setLIGGGHTS, particlesFileNameI, particlesFileNameO, setScale, setClearType, setMove, setLayer, setCutPlus, setCutMinus, setCutPlusB, setCutMinusB, setMarkPlus, setMarkMinus, setMarkPlusB, setMarkMinusB, setMarkCylZ));
   } else {
     std::cerr<<"Unknown type of particle file."<<std::endl;
     exit (EXIT_FAILURE);

@@ -36,4 +36,4 @@
 #include "config.h"
 #include "bulk.h"
 
-enum typeParticleFile { liggghtsDump1, liggghtsIn1 };
+enum typeParticleFile { liggghtsDump1, liggghtsIn1, utwente1 };

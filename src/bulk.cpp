@@ -100,6 +100,7 @@ void bulk::loadParticles() {
   int curLine = 1;
   std::vector <std::shared_ptr<particle> > tmpPartVector;
   bool breakLoading = false;
+  unsigned long long pId=0;
   
   while(std::getline(_file, line) and not(breakLoading)) {  
     std::stringstream linestream(line);
@@ -108,9 +109,8 @@ void bulk::loadParticles() {
     if (linestream.rdbuf()->in_avail() != 0 and curLine>=_cfg->nDat()) {  //Check, whether the line is not empty
       int valInt;
       double valD;
-      double pR, pD;
-      int pT;
-      unsigned long long pId;
+      double pR=0.0, pD=2000.0;
+      int pT=1;
       Eigen::Vector3d pC;
       if (curLine>=_cfg->nDat()) {
         for (int i=1; i<=_cfg->maxC(); i++) {
@@ -134,6 +134,9 @@ void bulk::loadParticles() {
           } else {
             linestream >> valD;
           }
+        }
+        if (_cfg->cId()<0) {
+          pId++;
         }
         std::shared_ptr<particle> tmpParticle ( new particle (pId, pT, pR*_cfg->radFactor(), pD, pC));
         _particleLoaded->addP(tmpParticle);
