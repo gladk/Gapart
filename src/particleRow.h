@@ -49,6 +49,7 @@ class particleRow {
     void calculateSizeUpd();
     void scale(double scaleFactor);
     void move(Eigen::Vector3d shift);
+    void rotate(Eigen::Vector3d angles);
     void type(int setType);
     void density(double setDensity);
     void createUpdArray();

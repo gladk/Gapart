@@ -21,6 +21,7 @@
 
 #include "particleRow.h"
 #include <iostream>
+#include <Eigen/Geometry>
 
 particleRow::particleRow() {
    _allPart.erase(_allPart.begin(),_allPart.end());
@@ -162,6 +163,23 @@ void particleRow::move(Eigen::Vector3d shift) {
   if (_allPart.size()>0) {
     BOOST_FOREACH(std::shared_ptr<particle> p, _allPartUpd) {
       p->c(p->c() + shift);
+    }
+  }
+  _sizeCalculateUpd = false;
+};
+
+void particleRow::rotate(Eigen::Vector3d angles) {
+  Eigen::Quaterniond qx = Eigen::Quaterniond(Eigen::AngleAxisd(angles(0)/360.0*2.0*M_PI, Eigen::Vector3d::UnitX()));
+  Eigen::Quaterniond qy = Eigen::Quaterniond(Eigen::AngleAxisd(angles(1)/360.0*2.0*M_PI, Eigen::Vector3d::UnitY()));
+  Eigen::Quaterniond qz = Eigen::Quaterniond(Eigen::AngleAxisd(angles(2)/360.0*2.0*M_PI, Eigen::Vector3d::UnitZ()));
+   
+  if (_allPart.size()>0) {
+    BOOST_FOREACH(std::shared_ptr<particle> p, _allPartUpd) {
+      Eigen::Vector3d c = p->c();
+      if (angles(0)!= 0.0) c = qx*c;
+      if (angles(1)!= 0.0) c = qy*c;
+      if (angles(2)!= 0.0) c = qz*c;
+      p->c(c);
     }
   }
   _sizeCalculateUpd = false;

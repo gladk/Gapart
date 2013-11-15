@@ -48,6 +48,11 @@ bulk::bulk(std::shared_ptr<configopt> cfg) {
     _particleLoaded->move(_cfg->move());
   }
   
+  if (_cfg->rotate() != Eigen::Vector3d::Zero()) {
+    std::cout<<"Rotating particles with the angles: ["<< _cfg->rotate()(0) <<", "<< _cfg->rotate()(1) <<", "<< _cfg->rotate()(2) <<"]"<<std::endl;
+    _particleLoaded->rotate(_cfg->rotate());
+  }
+  
   
   if (_cfg->cutPlusB().norm()!=0 ) {
     _particleLoaded->cutParticlesXYZ(_cfg->cutPlusB(), _cfg->cutPlus());
