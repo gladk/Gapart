@@ -234,6 +234,30 @@ void particleRow::createLayers(Eigen::Vector3i numL, Eigen::Vector3d shiftL){
   }
 };
 
+void particleRow::createCopyRotate(Eigen::Vector3i copyRotate) {
+  Eigen::Quaterniond q = Eigen::Quaterniond::Identity();
+  for (unsigned short int d = 0; d < 3; d++) {
+    if (copyRotate(d) > 1) {
+      std::vector <std::shared_ptr<particle> > allPartUpdNew;
+      BOOST_FOREACH(std::shared_ptr<particle> p, _allPartUpd) {
+        for (int z = 0; z < copyRotate(d); z++) {
+            Eigen::Vector3d newPosParticle;
+            if (d==0) q = Eigen::Quaterniond(Eigen::AngleAxisd(2.0*M_PI/copyRotate(d)*z, Eigen::Vector3d::UnitX()));
+            if (d==1) q = Eigen::Quaterniond(Eigen::AngleAxisd(2.0*M_PI/copyRotate(d)*z, Eigen::Vector3d::UnitY()));
+            if (d==2) q = Eigen::Quaterniond(Eigen::AngleAxisd(2.0*M_PI/copyRotate(d)*z, Eigen::Vector3d::UnitZ()));
+            newPosParticle = q*p->c();
+            std::shared_ptr<particle> tmpParticle (new particle (p->id() + _allPartUpd.size()*z, p->type(), p->rad(), 
+                          p->density(), newPosParticle));
+            
+          allPartUpdNew.push_back(tmpParticle);
+        }
+      }
+      _allPartUpd = allPartUpdNew;
+    }
+    _sizeCalculateUpd = false;
+  }
+};
+
 void particleRow::cutParticlesXYZ(Eigen::Vector3i cutBool, Eigen::Vector3d cutLength) {
   std::vector <std::shared_ptr<particle> > allPartUpdNew;
   unsigned long long tmpId = 0;

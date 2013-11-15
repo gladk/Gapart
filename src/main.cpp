@@ -46,6 +46,7 @@ This program comes with ABSOLUTELY NO WARRANTY.\n\
   Eigen::Vector3d setMove = Eigen::Vector3d::Zero();
   Eigen::Vector3d setRotate = Eigen::Vector3d::Zero();
   Eigen::Vector3i setLayer = Eigen::Vector3i::Zero();
+  Eigen::Vector3i setCopyRotate = Eigen::Vector3i::Zero();
   Eigen::Vector3d setCutPlus = Eigen::Vector3d::Zero();
   Eigen::Vector3d setCutMinus = Eigen::Vector3d::Zero();
   Eigen::Vector3i setCutPlusB = Eigen::Vector3i::Zero();
@@ -79,7 +80,10 @@ This program comes with ABSOLUTELY NO WARRANTY.\n\
       ("rotateZ", po::value<double>()->default_value(0.0), "rotate particles around Z-coord [degrees], ignored if copyRotate* are defined")
       ("layerX", po::value<int>()->default_value(1), "particle layers along X-axis, shift between layers can be specified in moveX")
       ("layerY", po::value<int>()->default_value(1), "particle layers along Y-axis, shift between layers can be specified in moveY")
-      ("layerZ", po::value<int>()->default_value(1), "particle layers along Y-axis, shift between layers can be specified in moveZ")
+      ("layerZ", po::value<int>()->default_value(1), "particle layers along Z-axis, shift between layers can be specified in moveZ")
+      ("copyRotateX", po::value<int>()->default_value(1), "particle will be rotated and copied around X-axis")
+      ("copyRotateY", po::value<int>()->default_value(1), "particle will be rotated and copied around Y-axis")
+      ("copyRotateZ", po::value<int>()->default_value(1), "particle will be rotated and copied around Z-axis")
       ("cutX+", po::value<double>(), "cut particles by X-coordinate in positive direction, e.g. all particles, where Xi>X")
       ("cutY+", po::value<double>(), "cut particles by Y-coordinate in positive direction, e.g. all particles, where Yi>Y")
       ("cutZ+", po::value<double>(), "cut particles by Z-coordinate in positive direction, e.g. all particles, where Zi>Z")
@@ -190,6 +194,11 @@ This program comes with ABSOLUTELY NO WARRANTY.\n\
       setLayer = Eigen::Vector3i(vm["layerX"].as<int>(), vm["layerY"].as<int>(), vm["layerZ"].as<int>());
       cout << "number of particle layers: ["<< setLayer(0) <<", "<< setLayer(1) <<", "<< setLayer(2) <<"]"<<std::endl;
     }
+    
+    if ((vm["copyRotateX"].as<int>()>1) or (vm["copyRotateY"].as<int>()>1) or (vm["copyRotateZ"].as<int>()>1)) {
+      setCopyRotate = Eigen::Vector3i(vm["copyRotateX"].as<int>(), vm["copyRotateY"].as<int>(), vm["copyRotateZ"].as<int>());
+      cout << "number of particle CopyRotate-layers: ["<< setCopyRotate(0) <<", "<< setCopyRotate(1) <<", "<< setCopyRotate(2) <<"]"<<std::endl;
+    }
   
   
     if (vm.count("cutX+")) { setCutPlusB(0) = 1; setCutPlus(0) =  vm["cutX+"].as<double>(); cout<< "particles will be cutted in positive direction X: "<<setCutPlus(0)<<std::endl;}
@@ -275,11 +284,11 @@ This program comes with ABSOLUTELY NO WARRANTY.\n\
   
   std::shared_ptr<configopt> configParams;
   if (curTypeParticleFile == liggghtsDump1) {
-    configParams = std::shared_ptr<configopt> (new configopt(Eigen::Vector3d::Zero(), 4, 10, 1, 2, 4, 19, 27, 1.0, setVtk, setYADE, setLIGGGHTS, particlesFileNameI, particlesFileNameO, setScale, setClearType, setMove, setRotate, setLayer, setCutPlus, setCutMinus, setCutPlusB, setCutMinusB, setMarkPlus, setMarkMinus, setMarkPlusB, setMarkMinusB, setMarkCylZ, setDensity));
+    configParams = std::shared_ptr<configopt> (new configopt(Eigen::Vector3d::Zero(), 4, 10, 1, 2, 4, 19, 27, 1.0, setVtk, setYADE, setLIGGGHTS, particlesFileNameI, particlesFileNameO, setScale, setClearType, setMove, setRotate, setLayer, setCopyRotate, setCutPlus, setCutMinus, setCutPlusB, setCutMinusB, setMarkPlus, setMarkMinus, setMarkPlusB, setMarkMinusB, setMarkCylZ, setDensity));
   } else if (curTypeParticleFile == liggghtsIn1) {
-    configParams = std::shared_ptr<configopt> (new configopt(Eigen::Vector3d::Zero(), -1, 12, 1, 2, 5, 3, 4, 0.5,  setVtk, setYADE, setLIGGGHTS, particlesFileNameI, particlesFileNameO, setScale, setClearType, setMove, setRotate, setLayer, setCutPlus, setCutMinus, setCutPlusB, setCutMinusB, setMarkPlus, setMarkMinus, setMarkPlusB, setMarkMinusB, setMarkCylZ, setDensity));
+    configParams = std::shared_ptr<configopt> (new configopt(Eigen::Vector3d::Zero(), -1, 12, 1, 2, 5, 3, 4, 0.5,  setVtk, setYADE, setLIGGGHTS, particlesFileNameI, particlesFileNameO, setScale, setClearType, setMove, setRotate, setLayer, setCopyRotate, setCutPlus, setCutMinus, setCutPlusB, setCutMinusB, setMarkPlus, setMarkMinus, setMarkPlusB, setMarkMinusB, setMarkCylZ, setDensity));
   } else if (curTypeParticleFile == utwente1) {
-    configParams = std::shared_ptr<configopt> (new configopt(Eigen::Vector3d::Zero(), -1, 15, -1, -1, 1, 7, -1, 1.0,  setVtk, setYADE, setLIGGGHTS, particlesFileNameI, particlesFileNameO, setScale, setClearType, setMove, setRotate, setLayer, setCutPlus, setCutMinus, setCutPlusB, setCutMinusB, setMarkPlus, setMarkMinus, setMarkPlusB, setMarkMinusB, setMarkCylZ, setDensity));
+    configParams = std::shared_ptr<configopt> (new configopt(Eigen::Vector3d::Zero(), -1, 15, -1, -1, 1, 7, -1, 1.0,  setVtk, setYADE, setLIGGGHTS, particlesFileNameI, particlesFileNameO, setScale, setClearType, setMove, setRotate, setLayer, setCopyRotate, setCutPlus, setCutMinus, setCutPlusB, setCutMinusB, setMarkPlus, setMarkMinus, setMarkPlusB, setMarkMinusB, setMarkCylZ, setDensity));
   } else {
     std::cerr<<"Unknown type of particle file."<<std::endl;
     exit (EXIT_FAILURE);

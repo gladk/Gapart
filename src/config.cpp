@@ -27,6 +27,7 @@ configopt::configopt(Eigen::Vector3d c, int nAt, int nDat, int cId, int cT, int 
                      int cR, int cD, double radFactor, bool vtk, bool yade, bool liggghts, 
                      std::string FNameI, std::string FNameO, double scale, 
                      int clearType, Eigen::Vector3d move, Eigen::Vector3d rotate, Eigen::Vector3i layer,
+                     Eigen::Vector3i copyRotate,
                      Eigen::Vector3d cutPlus, Eigen::Vector3d cutMinus,
                      Eigen::Vector3i cutPlusB, Eigen::Vector3i cutMinusB,
                      Eigen::Vector3d markPlus, Eigen::Vector3d markMinus,
@@ -56,6 +57,7 @@ configopt::configopt(Eigen::Vector3d c, int nAt, int nDat, int cId, int cT, int 
   _move = move;
   _rotate = rotate;
   _layer = layer;
+  _copyRotate = copyRotate;
   _radFactor = radFactor;
   _cutPlus = cutPlus;
   _cutMinus = cutMinus;

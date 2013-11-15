@@ -48,7 +48,11 @@ bulk::bulk(std::shared_ptr<configopt> cfg) {
     _particleLoaded->move(_cfg->move());
   }
   
-  if (_cfg->rotate() != Eigen::Vector3d::Zero()) {
+    
+  if (_cfg->copyRotate()(0)>1 or _cfg->copyRotate()(1)>1 or _cfg->copyRotate()(2)>1) {
+    std::cout<<"Creating copyRotate-layers of particles along xyz-axis layers: ["<<  _cfg->copyRotate()(0) <<", "<<  _cfg->copyRotate()(1) <<", "<<  _cfg->copyRotate()(2) <<"]"<<std::endl;
+    _particleLoaded->createCopyRotate(_cfg->copyRotate());
+  } else if (_cfg->rotate() != Eigen::Vector3d::Zero()) {
     std::cout<<"Rotating particles with the angles: ["<< _cfg->rotate()(0) <<", "<< _cfg->rotate()(1) <<", "<< _cfg->rotate()(2) <<"]"<<std::endl;
     _particleLoaded->rotate(_cfg->rotate());
   }
