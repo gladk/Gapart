@@ -59,11 +59,11 @@ bulk::bulk(std::shared_ptr<configopt> cfg) {
   
   
   if (_cfg->cutPlusB().norm()!=0 ) {
-    _particleLoaded->cutParticlesXYZ(_cfg->cutPlusB(), _cfg->cutPlus(), _cfg->cutCylZ());
+    _particleLoaded->cutParticlesXYZ(_cfg->cutPlusB(), _cfg->cutPlus(),_cfg->clearType(), _cfg->cutCylZ());
   }
   
   if (_cfg->cutMinusB().norm()!=0 ) {
-    _particleLoaded->cutParticlesXYZ(_cfg->cutMinusB(), _cfg->cutMinus(), _cfg->cutCylZ());
+    _particleLoaded->cutParticlesXYZ(_cfg->cutMinusB(), _cfg->cutMinus(),_cfg->clearType(), _cfg->cutCylZ());
   }
   
   if (_cfg->markPlusB().norm()!=0 ) {
@@ -76,7 +76,10 @@ bulk::bulk(std::shared_ptr<configopt> cfg) {
   
   // We clear particle types only, if cut or mark functions are not enabled
     
-  if (_cfg->clearType() >= 0 and _cfg->markPlusB().norm()==0 and _cfg->markMinusB().norm()==0 and _cfg->markCylZ()<=0.0) {
+  if (_cfg->clearType() >= 0 and 
+      _cfg->markPlusB().norm()==0 and _cfg->markMinusB().norm()==0 and _cfg->markCylZ()<=0.0 and
+      _cfg->cutPlusB().norm()==0 and _cfg->cutMinusB().norm()==0 and _cfg->cutCylZ()<=0.0
+      ) {
     std::cout<<"Setting type of particles: "<<_cfg->clearType()<<std::endl;
     _particleLoaded->type(_cfg->clearType());
   }

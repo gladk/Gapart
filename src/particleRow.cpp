@@ -258,25 +258,24 @@ void particleRow::createCopyRotate(Eigen::Vector3i copyRotate) {
   }
 };
 
-void particleRow::cutParticlesXYZ(Eigen::Vector3i cutBool, Eigen::Vector3d cutLength, double cutCylZ) {
+void particleRow::cutParticlesXYZ(Eigen::Vector3i cutBool, Eigen::Vector3d cutLength, int setType, double cutCylZ) {
   std::vector <std::shared_ptr<particle> > allPartUpdNew;
   unsigned long long tmpId = 0;
   for (unsigned short int d = 0; d < 3; d++) {
     if (cutBool(d) != 0.0) {
       BOOST_FOREACH(std::shared_ptr<particle> p, _allPartUpd) {
-        if (cutBool(d)>0.0 and ((p->c()(d)) < cutLength(d)) 
-          and ((cutCylZ>0.0 and not(inCylZ(p, cutCylZ))) or (cutCylZ<=0.0))
-          ) {
-          allPartUpdNew.push_back(p);
-          _sizeCalculateUpd = false;
-        } else if (cutBool(d)<0.0 and ((p->c()(d)) > cutLength(d))
-          and ((cutCylZ>0.0 and not(inCylZ(p, cutCylZ))) or (cutCylZ<=0.0))
-        ) {
-          allPartUpdNew.push_back(p);
-          _sizeCalculateUpd = false;
+        if (
+            // Conditions to remove particle
+            (  (cutBool(d)<0.0 and ((p->c()(d)) < cutLength(d)))      
+            or (cutBool(d)>0.0 and ((p->c()(d)) > cutLength(d)))
+            ) and ((p->type()== setType and (setType>0)) or (setType<0))
+              and ((cutCylZ>0.0 and inCylZ(p, cutCylZ)) or (cutCylZ<=0.0))
+            ) {
+            tmpId++;
         } else {
-          tmpId++;
-        }
+          allPartUpdNew.push_back(p);
+          _sizeCalculateUpd = false;
+        } 
       }
     }
   }

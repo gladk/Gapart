@@ -55,7 +55,7 @@ class particleRow {
     void createUpdArray();
     void createLayers(Eigen::Vector3i numL, Eigen::Vector3d shiftL);
     void createCopyRotate(Eigen::Vector3i copyRotate);
-    void cutParticlesXYZ(Eigen::Vector3i cutBool, Eigen::Vector3d cutLength, double cutCylZ);
+    void cutParticlesXYZ(Eigen::Vector3i cutBool, Eigen::Vector3d cutLength, int setType, double cutCylZ);
     void markParticlesXYZ(Eigen::Vector3i markBool, Eigen::Vector3d markLength, int setType, double markCylZ);
     void markParticlesCylZ(double markCylZ, int setType);
     unsigned long long size() {return _allPart.size();}; 
