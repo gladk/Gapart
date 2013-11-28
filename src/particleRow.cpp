@@ -258,16 +258,20 @@ void particleRow::createCopyRotate(Eigen::Vector3i copyRotate) {
   }
 };
 
-void particleRow::cutParticlesXYZ(Eigen::Vector3i cutBool, Eigen::Vector3d cutLength) {
+void particleRow::cutParticlesXYZ(Eigen::Vector3i cutBool, Eigen::Vector3d cutLength, double cutCylZ) {
   std::vector <std::shared_ptr<particle> > allPartUpdNew;
   unsigned long long tmpId = 0;
   for (unsigned short int d = 0; d < 3; d++) {
     if (cutBool(d) != 0.0) {
       BOOST_FOREACH(std::shared_ptr<particle> p, _allPartUpd) {
-        if (cutBool(d)>0.0 and ((p->c()(d)) < cutLength(d))) {
+        if (cutBool(d)>0.0 and ((p->c()(d)) < cutLength(d)) 
+          and ((cutCylZ>0.0 and not(inCylZ(p, cutCylZ))) or (cutCylZ<=0.0))
+          ) {
           allPartUpdNew.push_back(p);
           _sizeCalculateUpd = false;
-        } else if (cutBool(d)<0.0 and ((p->c()(d)) > cutLength(d))) {
+        } else if (cutBool(d)<0.0 and ((p->c()(d)) > cutLength(d))
+          and ((cutCylZ>0.0 and not(inCylZ(p, cutCylZ))) or (cutCylZ<=0.0))
+        ) {
           allPartUpdNew.push_back(p);
           _sizeCalculateUpd = false;
         } else {
@@ -285,11 +289,11 @@ void particleRow::markParticlesXYZ(Eigen::Vector3i markBool, Eigen::Vector3d mar
   for (unsigned short int d = 0; d < 3; d++) {
     if (markBool(d) != 0.0) {
       BOOST_FOREACH(std::shared_ptr<particle> p, _allPartUpd) {
-        if (markBool(d)>0.0 and ((p->c()(d)) >= markLength(d)) and markCylZDo(p, markCylZ) ) {
+        if (markBool(d)>0.0 and ((p->c()(d)) >= markLength(d)) and inCylZ(p, markCylZ) ) {
           p->type(setType);
           _sizeCalculateUpd = false;
           tmpId++;
-        } else if (markBool(d)<0.0 and ((p->c()(d)) <= markLength(d)) and markCylZDo(p, markCylZ) ) {
+        } else if (markBool(d)<0.0 and ((p->c()(d)) <= markLength(d)) and inCylZ(p, markCylZ) ) {
           p->type(setType);
           _sizeCalculateUpd = false;
           tmpId++;
@@ -312,7 +316,7 @@ void particleRow::markParticlesCylZ(double markCylZ, int setType) {
   std::cout<<"Marked "<<tmpId<< " particles"<<std::endl;
 };
 
-bool particleRow::markCylZDo(std::shared_ptr<particle> p, double & markCylZ) {
+bool particleRow::inCylZ(std::shared_ptr<particle> p, double & markCylZ) {
   if ( (markCylZ>0.0 and (Eigen::Vector2d(p->c()(0),p->c()(1)).norm() <  markCylZ)) or
        (markCylZ<=0.0)) 
      {

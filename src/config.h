@@ -70,6 +70,7 @@ class configopt {
     Eigen::Vector3i _markPlusB; // Set 1, if positive direction should be marked
     Eigen::Vector3i _markMinusB;// Set -1, if negative direction should be marked
     double _markCylZ;           // Mark particles as a cylinder with given radius along Z-coordinate
+    double _cutCylZ;            // Cut particles as a cylinder with given radius along Z-coordinate
     
     
   public:
@@ -82,7 +83,7 @@ class configopt {
               Eigen::Vector3i cutPlusB, Eigen::Vector3i cutMinusB,
                      Eigen::Vector3d markPlus, Eigen::Vector3d markMinus,
                      Eigen::Vector3i markPlusB, Eigen::Vector3i markMinusB,
-                     double markCylZ, double setDensity
+                     double markCylZ, double setDensity, double cutCylZ
                      );
               
     Eigen::Vector3d get_c(){return _c;};
@@ -120,4 +121,5 @@ class configopt {
     Eigen::Vector3d markMinus() {return _markMinus;}
     Eigen::Vector3i markMinusB() {return _markMinusB;}
     double markCylZ() {return _markCylZ;}
+    double cutCylZ() {return _cutCylZ;}
 };

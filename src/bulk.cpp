@@ -59,11 +59,11 @@ bulk::bulk(std::shared_ptr<configopt> cfg) {
   
   
   if (_cfg->cutPlusB().norm()!=0 ) {
-    _particleLoaded->cutParticlesXYZ(_cfg->cutPlusB(), _cfg->cutPlus());
+    _particleLoaded->cutParticlesXYZ(_cfg->cutPlusB(), _cfg->cutPlus(), _cfg->cutCylZ());
   }
   
   if (_cfg->cutMinusB().norm()!=0 ) {
-    _particleLoaded->cutParticlesXYZ(_cfg->cutMinusB(), _cfg->cutMinus());
+    _particleLoaded->cutParticlesXYZ(_cfg->cutMinusB(), _cfg->cutMinus(), _cfg->cutCylZ());
   }
   
   if (_cfg->markPlusB().norm()!=0 ) {

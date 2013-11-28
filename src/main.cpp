@@ -56,6 +56,7 @@ This program comes with ABSOLUTELY NO WARRANTY.\n\
   Eigen::Vector3i setMarkPlusB = Eigen::Vector3i::Zero();
   Eigen::Vector3i setMarkMinusB = Eigen::Vector3i::Zero();
   double setMarkCylZ = 0.0;
+  double setCutCylZ = 0.0;
   
   
   
@@ -97,6 +98,7 @@ This program comes with ABSOLUTELY NO WARRANTY.\n\
       ("markY-", po::value<double>(), "mark particles by Y-coordinate in negative direction, e.g. all particles, where Yi<Y")
       ("markZ-", po::value<double>(), "mark particles by Z-coordinate in negative direction, e.g. all particles, where Zi<Z")
       ("markCylZ", po::value<double>(), "mark particles as a cylinder with given radius along Z-coordinate. This option can be combined with mark*- options")
+      ("cutCylZ",  po::value<double>(), "cut particles as a cylinder with given radius along Z-coordinate. This option can be combined with cut*- options")
     ;
     
     po::positional_options_description p;
@@ -235,6 +237,11 @@ This program comes with ABSOLUTELY NO WARRANTY.\n\
       cout << "particles will be marked as a cylinder with given radius "<< vm["markCylZ"].as<double>() << " along Z-coordinate" << std::endl;
       setMarkCylZ = vm["markCylZ"].as<double>();
     }
+
+    if (vm.count("cutCylZ"))  {
+      cout << "particles will be cutted as a cylinder with given radius "<< vm["cutCylZ"].as<double>() << " along Z-coordinate" << std::endl;
+      setCutCylZ = vm["cutCylZ"].as<double>();
+    }
     
   }
   catch(exception& e) {
@@ -284,11 +291,11 @@ This program comes with ABSOLUTELY NO WARRANTY.\n\
   
   std::shared_ptr<configopt> configParams;
   if (curTypeParticleFile == liggghtsDump1) {
-    configParams = std::shared_ptr<configopt> (new configopt(Eigen::Vector3d::Zero(), 4, 10, 1, 2, 4, 19, 27, 1.0, setVtk, setYADE, setLIGGGHTS, particlesFileNameI, particlesFileNameO, setScale, setClearType, setMove, setRotate, setLayer, setCopyRotate, setCutPlus, setCutMinus, setCutPlusB, setCutMinusB, setMarkPlus, setMarkMinus, setMarkPlusB, setMarkMinusB, setMarkCylZ, setDensity));
+    configParams = std::shared_ptr<configopt> (new configopt(Eigen::Vector3d::Zero(), 4, 10, 1, 2, 4, 19, 27, 1.0, setVtk, setYADE, setLIGGGHTS, particlesFileNameI, particlesFileNameO, setScale, setClearType, setMove, setRotate, setLayer, setCopyRotate, setCutPlus, setCutMinus, setCutPlusB, setCutMinusB, setMarkPlus, setMarkMinus, setMarkPlusB, setMarkMinusB, setMarkCylZ, setDensity, setCutCylZ));
   } else if (curTypeParticleFile == liggghtsIn1) {
-    configParams = std::shared_ptr<configopt> (new configopt(Eigen::Vector3d::Zero(), -1, 12, 1, 2, 5, 3, 4, 0.5,  setVtk, setYADE, setLIGGGHTS, particlesFileNameI, particlesFileNameO, setScale, setClearType, setMove, setRotate, setLayer, setCopyRotate, setCutPlus, setCutMinus, setCutPlusB, setCutMinusB, setMarkPlus, setMarkMinus, setMarkPlusB, setMarkMinusB, setMarkCylZ, setDensity));
+    configParams = std::shared_ptr<configopt> (new configopt(Eigen::Vector3d::Zero(), -1, 12, 1, 2, 5, 3, 4, 0.5,  setVtk, setYADE, setLIGGGHTS, particlesFileNameI, particlesFileNameO, setScale, setClearType, setMove, setRotate, setLayer, setCopyRotate, setCutPlus, setCutMinus, setCutPlusB, setCutMinusB, setMarkPlus, setMarkMinus, setMarkPlusB, setMarkMinusB, setMarkCylZ, setDensity, setCutCylZ));
   } else if (curTypeParticleFile == utwente1) {
-    configParams = std::shared_ptr<configopt> (new configopt(Eigen::Vector3d::Zero(), -1, 15, -1, -1, 1, 7, -1, 1.0,  setVtk, setYADE, setLIGGGHTS, particlesFileNameI, particlesFileNameO, setScale, setClearType, setMove, setRotate, setLayer, setCopyRotate, setCutPlus, setCutMinus, setCutPlusB, setCutMinusB, setMarkPlus, setMarkMinus, setMarkPlusB, setMarkMinusB, setMarkCylZ, setDensity));
+    configParams = std::shared_ptr<configopt> (new configopt(Eigen::Vector3d::Zero(), -1, 15, -1, -1, 1, 7, -1, 1.0,  setVtk, setYADE, setLIGGGHTS, particlesFileNameI, particlesFileNameO, setScale, setClearType, setMove, setRotate, setLayer, setCopyRotate, setCutPlus, setCutMinus, setCutPlusB, setCutMinusB, setMarkPlus, setMarkMinus, setMarkPlusB, setMarkMinusB, setMarkCylZ, setDensity, setCutCylZ));
   } else {
     std::cerr<<"Unknown type of particle file."<<std::endl;
     exit (EXIT_FAILURE);
