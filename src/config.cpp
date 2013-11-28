@@ -72,6 +72,23 @@ configopt::configopt(Eigen::Vector3d c, int nAt, int nDat, int cId, int cT, int 
   _setDensity = setDensity;
 };
 
+void configopt::changeLoadFieldsNumbs(Eigen::Vector3d c, int nAt, int nDat, int cId, int cT, int cC, 
+              int cR, int cD, double radFactor) {
+  
+  _c = c;
+  
+  _nAt = nAt;
+  _nDat = nDat;
+  
+  _cId = cId; _maxColumnCheck(_cId, 0);
+  _cT = cT; _maxColumnCheck(_cT, 0);
+  _cC = cC; _maxColumnCheck(_cC, 2);
+  _cR = cR; _maxColumnCheck(_cR, 0);
+  _cD = cD; _maxColumnCheck(_cD, 0);
+
+  _radFactor = radFactor;
+};
+
 void configopt::_maxColumnCheck(int col, int addN) {
   if (col+addN > _maxC) {
     _maxC = col+addN;

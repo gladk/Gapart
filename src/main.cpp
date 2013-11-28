@@ -289,13 +289,18 @@ This program comes with ABSOLUTELY NO WARRANTY.\n\
     exit (EXIT_FAILURE);
   }
   
-  std::shared_ptr<configopt> configParams;
+  std::shared_ptr<configopt> configParams (new configopt(Eigen::Vector3d::Zero(), 
+    4, 10, 1, 2, 4, 19, 27, 1.0, setVtk, setYADE, setLIGGGHTS, particlesFileNameI, 
+    particlesFileNameO, setScale, setClearType, setMove, setRotate, setLayer, 
+    setCopyRotate, setCutPlus, setCutMinus, setCutPlusB, setCutMinusB, setMarkPlus, 
+    setMarkMinus, setMarkPlusB, setMarkMinusB, setMarkCylZ, setDensity, setCutCylZ));
+  
   if (curTypeParticleFile == liggghtsDump1) {
-    configParams = std::shared_ptr<configopt> (new configopt(Eigen::Vector3d::Zero(), 4, 10, 1, 2, 4, 19, 27, 1.0, setVtk, setYADE, setLIGGGHTS, particlesFileNameI, particlesFileNameO, setScale, setClearType, setMove, setRotate, setLayer, setCopyRotate, setCutPlus, setCutMinus, setCutPlusB, setCutMinusB, setMarkPlus, setMarkMinus, setMarkPlusB, setMarkMinusB, setMarkCylZ, setDensity, setCutCylZ));
+    configParams->changeLoadFieldsNumbs(Eigen::Vector3d::Zero(), 4, 10, 1, 2, 4, 19, 27, 1.0);
   } else if (curTypeParticleFile == liggghtsIn1) {
-    configParams = std::shared_ptr<configopt> (new configopt(Eigen::Vector3d::Zero(), -1, 12, 1, 2, 5, 3, 4, 0.5,  setVtk, setYADE, setLIGGGHTS, particlesFileNameI, particlesFileNameO, setScale, setClearType, setMove, setRotate, setLayer, setCopyRotate, setCutPlus, setCutMinus, setCutPlusB, setCutMinusB, setMarkPlus, setMarkMinus, setMarkPlusB, setMarkMinusB, setMarkCylZ, setDensity, setCutCylZ));
+    configParams->changeLoadFieldsNumbs(Eigen::Vector3d::Zero(), -1, 12, 1, 2, 5, 3, 4, 0.5);
   } else if (curTypeParticleFile == utwente1) {
-    configParams = std::shared_ptr<configopt> (new configopt(Eigen::Vector3d::Zero(), -1, 15, -1, -1, 1, 7, -1, 1.0,  setVtk, setYADE, setLIGGGHTS, particlesFileNameI, particlesFileNameO, setScale, setClearType, setMove, setRotate, setLayer, setCopyRotate, setCutPlus, setCutMinus, setCutPlusB, setCutMinusB, setMarkPlus, setMarkMinus, setMarkPlusB, setMarkMinusB, setMarkCylZ, setDensity, setCutCylZ));
+    configParams->changeLoadFieldsNumbs(Eigen::Vector3d::Zero(), -1, 15, -1, -1, 1, 7, -1, 1.0);
   } else {
     std::cerr<<"Unknown type of particle file."<<std::endl;
     exit (EXIT_FAILURE);

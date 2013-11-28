@@ -85,7 +85,8 @@ class configopt {
                      Eigen::Vector3i markPlusB, Eigen::Vector3i markMinusB,
                      double markCylZ, double setDensity, double cutCylZ
                      );
-              
+    void changeLoadFieldsNumbs(Eigen::Vector3d c, int nAt, int nDat, int cId, int cT, int cC, 
+              int cR, int cD, double radFactor);
     Eigen::Vector3d get_c(){return _c;};
     int nAt(){return _nAt;};
     int nDat(){return _nDat;};
