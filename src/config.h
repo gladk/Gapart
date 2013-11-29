@@ -71,6 +71,7 @@ class configopt {
     Eigen::Vector3i _markMinusB;// Set -1, if negative direction should be marked
     double _markCylZ;           // Mark particles as a cylinder with given radius along Z-coordinate
     double _cutCylZ;            // Cut particles as a cylinder with given radius along Z-coordinate
+    Eigen::Vector3i _mirror;    // Mirror particles
     
     
   public:
@@ -83,7 +84,8 @@ class configopt {
               Eigen::Vector3i cutPlusB, Eigen::Vector3i cutMinusB,
                      Eigen::Vector3d markPlus, Eigen::Vector3d markMinus,
                      Eigen::Vector3i markPlusB, Eigen::Vector3i markMinusB,
-                     double markCylZ, double setDensity, double cutCylZ
+                     double markCylZ, double setDensity, double cutCylZ,
+                     Eigen::Vector3i mirror
                      );
     void changeLoadFieldsNumbs(Eigen::Vector3d c, int nAt, int nDat, int cId, int cT, int cC, 
               int cR, int cD, double radFactor);
@@ -121,6 +123,7 @@ class configopt {
     Eigen::Vector3i markPlusB() {return _markPlusB;}
     Eigen::Vector3d markMinus() {return _markMinus;}
     Eigen::Vector3i markMinusB() {return _markMinusB;}
+    Eigen::Vector3i mirror()     {return _mirror;}
     double markCylZ() {return _markCylZ;}
     double cutCylZ() {return _cutCylZ;}
 };

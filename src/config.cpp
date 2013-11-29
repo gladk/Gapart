@@ -32,7 +32,8 @@ configopt::configopt(Eigen::Vector3d c, int nAt, int nDat, int cId, int cT, int 
                      Eigen::Vector3i cutPlusB, Eigen::Vector3i cutMinusB,
                      Eigen::Vector3d markPlus, Eigen::Vector3d markMinus,
                      Eigen::Vector3i markPlusB, Eigen::Vector3i markMinusB,
-                     double markCylZ, double setDensity, double cutCylZ
+                     double markCylZ, double setDensity, double cutCylZ,
+                     Eigen::Vector3i mirror
                      ) {
   
   _maxC = -1;
@@ -70,6 +71,7 @@ configopt::configopt(Eigen::Vector3d c, int nAt, int nDat, int cId, int cT, int 
   _markCylZ = markCylZ;
   _cutCylZ = cutCylZ;
   _setDensity = setDensity;
+  _mirror = mirror;
 };
 
 void configopt::changeLoadFieldsNumbs(Eigen::Vector3d c, int nAt, int nDat, int cId, int cT, int cC, 

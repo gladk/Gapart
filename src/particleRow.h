@@ -70,4 +70,5 @@ class particleRow {
     bool sizeCalculate() {return _sizeCalculate;}
     bool sizeCalculateUpd() {return _sizeCalculateUpd;}
     bool inCylZ(std::shared_ptr<particle> p, double & markCylZ);
+    void mirrorXYZ(Eigen::Vector3i mirror);
 };

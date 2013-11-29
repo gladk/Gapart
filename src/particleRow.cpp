@@ -329,3 +329,26 @@ std::vector <int> particleRow::types()  {
   return _types;
 };
 
+void particleRow::mirrorXYZ(Eigen::Vector3i mirror) {
+  std::vector <std::shared_ptr<particle> > allPartUpdNew;
+  for (unsigned short int d = 0; d < 3; d++) {
+    if (mirror(d) != 0.0) {
+      Eigen::Vector3d newPosParticle = Eigen::Vector3d::Zero();
+      BOOST_FOREACH(std::shared_ptr<particle> p, _allPartUpd) {
+        
+        if (d==0) {newPosParticle = Eigen::Vector3d(0,0,((this->centerUpd()(2)+this->extendsUpd()(2)) - p->c()(2))*2.0);}     //XY plane
+        if (d==1) {newPosParticle = Eigen::Vector3d(    ((this->centerUpd()(0)+this->extendsUpd()(0)) - p->c()(0))*2.0,0,0);} //YZ plane
+        if (d==2) {newPosParticle = Eigen::Vector3d(0,  ((this->centerUpd()(1)+this->extendsUpd()(1)) - p->c()(1))*2.0,0);}   //XZ plane
+        
+        std::shared_ptr<particle> tmpParticle (new particle (p->id() + _allPartUpd.size(), p->type(), p->rad(), p->density(), p->c()+newPosParticle));
+        
+        allPartUpdNew.push_back(tmpParticle);
+        if (mirror(d)<0) {allPartUpdNew.push_back(p);}
+      }
+    }
+  }
+  
+  _sizeCalculateUpd = false;
+  _allPartUpd = allPartUpdNew;
+};
+

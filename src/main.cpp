@@ -55,10 +55,9 @@ This program comes with ABSOLUTELY NO WARRANTY.\n\
   Eigen::Vector3d setMarkMinus = Eigen::Vector3d::Zero();
   Eigen::Vector3i setMarkPlusB = Eigen::Vector3i::Zero();
   Eigen::Vector3i setMarkMinusB = Eigen::Vector3i::Zero();
+  Eigen::Vector3i setMirror = Eigen::Vector3i::Zero();
   double setMarkCylZ = 0.0;
   double setCutCylZ = 0.0;
-  
-  
   
   try {
     po::options_description desc("Allowed options");
@@ -99,6 +98,12 @@ This program comes with ABSOLUTELY NO WARRANTY.\n\
       ("markZ-", po::value<double>(), "mark particles by Z-coordinate in negative direction, e.g. all particles, where Zi<Z")
       ("markCylZ", po::value<double>(), "mark particles as a cylinder with given radius along Z-coordinate. This option can be combined with mark*- options")
       ("cutCylZ",  po::value<double>(), "cut particles as a cylinder with given radius along Z-coordinate. This option can be combined with cut*- options. If -c option is used, the only particles with given type will be affected by this operation")
+      ("mirrorXY", "mirror particles about XY-plane")
+      ("mirrorYZ", "mirror particles about YZ-plane")
+      ("mirrorXZ", "mirror particles about Xz-plane")
+      ("copyMirrorXY", "copy and mirror particles about XY-plane")
+      ("copyMirrorYZ", "copy and mirror particles about YZ-plane")
+      ("copyMirrorXZ", "copy and mirror particles about Xz-plane")
     ;
     
     po::positional_options_description p;
@@ -243,6 +248,14 @@ This program comes with ABSOLUTELY NO WARRANTY.\n\
       setCutCylZ = vm["cutCylZ"].as<double>();
     }
     
+    if (vm.count("mirrorXY"))  { cout << "particles will be mirrored about XY-plane" << std::endl; setMirror(0) = 1;}
+    if (vm.count("mirrorYZ"))  { cout << "particles will be mirrored about YZ-plane" << std::endl; setMirror(1) = 1;}
+    if (vm.count("mirrorXZ"))  { cout << "particles will be mirrored about ZZ-plane" << std::endl; setMirror(2) = 1;}
+    
+    if (vm.count("copyMirrorXY"))  { cout << "particles will be mirrored and copied about XY-plane" << std::endl; setMirror(0) = -1;}
+    if (vm.count("copyMirrorYZ"))  { cout << "particles will be mirrored and copied about YZ-plane" << std::endl; setMirror(1) = -1;}
+    if (vm.count("copyMirrorXZ"))  { cout << "particles will be mirrored and copied about ZZ-plane" << std::endl; setMirror(2) = -1;}
+    
   }
   catch(exception& e) {
       cerr << "error: " << e.what() << std::endl;
@@ -293,7 +306,8 @@ This program comes with ABSOLUTELY NO WARRANTY.\n\
     4, 10, 1, 2, 4, 19, 27, 1.0, setVtk, setYADE, setLIGGGHTS, particlesFileNameI, 
     particlesFileNameO, setScale, setClearType, setMove, setRotate, setLayer, 
     setCopyRotate, setCutPlus, setCutMinus, setCutPlusB, setCutMinusB, setMarkPlus, 
-    setMarkMinus, setMarkPlusB, setMarkMinusB, setMarkCylZ, setDensity, setCutCylZ));
+    setMarkMinus, setMarkPlusB, setMarkMinusB, setMarkCylZ, setDensity, setCutCylZ,
+    setMirror));
   
   if (curTypeParticleFile == liggghtsDump1) {
     configParams->changeLoadFieldsNumbs(Eigen::Vector3d::Zero(), 4, 10, 1, 2, 4, 19, 27, 1.0);

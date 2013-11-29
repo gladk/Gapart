@@ -93,6 +93,10 @@ bulk::bulk(std::shared_ptr<configopt> cfg) {
     _particleLoaded->markParticlesCylZ(_cfg->markCylZ(), _cfg->clearType());
   }
   
+  if (_cfg->mirror().norm()!=0){
+    _particleLoaded->mirrorXYZ(_cfg->mirror());
+  }
+  
   std::shared_ptr <exportclass> exp (new exportclass(_cfg, _particleLoaded));
   
   if (_cfg->Vtk())  {

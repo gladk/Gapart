@@ -37,3 +37,4 @@ particle::particle() {
   _c = Eigen::Vector3d::Zero();
   _d = -1.0;
 };
+
