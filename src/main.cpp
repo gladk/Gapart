@@ -98,7 +98,7 @@ This program comes with ABSOLUTELY NO WARRANTY.\n\
       ("markY-", po::value<double>(), "mark particles by Y-coordinate in negative direction, e.g. all particles, where Yi<Y")
       ("markZ-", po::value<double>(), "mark particles by Z-coordinate in negative direction, e.g. all particles, where Zi<Z")
       ("markCylZ", po::value<double>(), "mark particles as a cylinder with given radius along Z-coordinate. This option can be combined with mark*- options")
-      ("cutCylZ",  po::value<double>(), "cut particles as a cylinder with given radius along Z-coordinate. This option can be combined with cut*- options")
+      ("cutCylZ",  po::value<double>(), "cut particles as a cylinder with given radius along Z-coordinate. This option can be combined with cut*- options. If -c option is used, the only particles with given type will be affected by this operation")
     ;
     
     po::positional_options_description p;
