@@ -288,11 +288,11 @@ void particleRow::markParticlesXYZ(Eigen::Vector3i markBool, Eigen::Vector3d mar
   for (unsigned short int d = 0; d < 3; d++) {
     if (markBool(d) != 0.0) {
       BOOST_FOREACH(std::shared_ptr<particle> p, _allPartUpd) {
-        if (markBool(d)>0.0 and ((p->c()(d)) >= markLength(d)) and inCylZ(p, markCylZ) ) {
-          p->type(setType);
-          _sizeCalculateUpd = false;
-          tmpId++;
-        } else if (markBool(d)<0.0 and ((p->c()(d)) <= markLength(d)) and inCylZ(p, markCylZ) ) {
+        if (
+            (markBool(d)>0.0 and ((p->c()(d)) >= markLength(d)) and inCylZ(p, markCylZ) )
+            or 
+            (markBool(d)<0.0 and ((p->c()(d)) <= markLength(d)) and inCylZ(p, markCylZ) )
+           ) {
           p->type(setType);
           _sizeCalculateUpd = false;
           tmpId++;
