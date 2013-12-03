@@ -39,7 +39,7 @@ This program comes with ABSOLUTELY NO WARRANTY.\n\
   
   bool setVtk = false;
   bool setYADE = false;
-  bool setLIGGGHTS = true;
+  bool setLIGGGHTS = false;
   double setScale = 1.0;
   int setClearType = -1;
   double setDensity = -1;
@@ -67,7 +67,7 @@ This program comes with ABSOLUTELY NO WARRANTY.\n\
       ("output,o", po::value<string>(), "output file name")
       ("vtk,v", "create VTK-file, OFF by default")
       ("yade,y", "create YADE-file, OFF by default")
-      ("liggghts,l", "create LIGGGHTS-file, ON by default")
+      ("liggghts,l", "create LIGGGHTS-file, OFF by default")
       ("type,t", po::value<string>()->default_value("liggghts-dump1"), "type of particle input file, liggghts-dump1 by default. Possible values: liggghts-dump1, liggghts-in1, utwente1")
       ("scale,s", po::value<double>()->default_value(1.0), "scale particles including distance from center of bulk")
       ("clear,c", po::value<int>()->default_value(-1), "clear types of particles, set them 1, if nothing more detected. This parameter is used to set types for mark-options. In this case particles will not be cleared")

@@ -100,16 +100,31 @@ bulk::bulk(std::shared_ptr<configopt> cfg) {
   std::shared_ptr <exportclass> exp (new exportclass(_cfg, _particleLoaded));
   
   if (_cfg->Vtk())  {
-    std::cout<<"Creating vtk-file "<<std::endl;
-    exp->VTK();
+    std::cout<<"Creating vtk-file... ";
+    if (exp->VTK()) {
+      std::cout<<"Created!"<<std::endl;
+    } else {
+      std::cout<<"NOT created!"<<std::endl;
+    }
   }
   
   if (_cfg->YADE())  {
-    std::cout<<"Creating yade-file "<<std::endl;
-    exp->YADE();
+    std::cout<<"Creating yade-file... ";
+    if (exp->YADE()) {
+      std::cout<<"Created!"<<std::endl;
+    } else {
+      std::cout<<"NOT created!"<<std::endl;
+    }
   }
   
-  exp->LiggghtsIN();
+  if (_cfg->LIGGGHTS())  {
+    std::cout<<"Creating liggghts-file... ";
+    if (exp->LiggghtsIN()) {
+      std::cout<<"Created!"<<std::endl;
+    } else {
+      std::cout<<"NOT created!"<<std::endl;
+    }
+  }
 };
 
 

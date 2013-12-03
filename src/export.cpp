@@ -27,119 +27,133 @@ exportclass::exportclass(std::shared_ptr<configopt> cfg, std::shared_ptr <partic
   _particleRow = particleRow;
 };
 
-void exportclass::LiggghtsIN() {
-  stringstream ss;
-  //================================================
-  
-  std::string _fileNameOut;
-  _fileNameOut = _cfg->FNameO();
-  _fileNameOut += ".liggghts";
-  
-  ofstream Lig (_fileNameOut.c_str());
-  Lig << "LIGGGHTS Description\n\n";
-  Lig << _particleRow->sizeUpd() << " atoms\n";
-  Lig << _particleRow->types().size() << " atom types\n\n";       //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~!!!!!!!!!!!!!
-  Lig << _particleRow->centerUpd()(0) - _particleRow->extendsUpd()(0) << " " << _particleRow->centerUpd()(0) + _particleRow->extendsUpd()(0) << " xlo xhi\n";
-  Lig << _particleRow->centerUpd()(1) - _particleRow->extendsUpd()(1) << " " << _particleRow->centerUpd()(1) + _particleRow->extendsUpd()(1) << " ylo yhi\n";
-  Lig << _particleRow->centerUpd()(2) - _particleRow->extendsUpd()(2) << " " << _particleRow->centerUpd()(2) + _particleRow->extendsUpd()(2) << " zlo zhi\n\nAtoms\n\n";
-  
-  for (unsigned long long z = 0; z<_particleRow->sizeUpd(); z++) {
-    std::shared_ptr<particle> p = _particleRow->getPartUpd(z);
-    Lig << p->id() << " " << p->type() << " " << p->rad()*2.0 << " " << p->density() << " " << p->c()(0) << " " << p->c()(1)<< " " << p->c()(2) <<'\n';
-  }
-  
-  Lig <<"\nVelocities\n\n";
-  
-  for (unsigned long long z = 0; z<_particleRow->sizeUpd(); z++) {
-    std::shared_ptr<particle> p = _particleRow->getPartUpd(z);
-    Lig << p->id() << " 0.0 0.0 0.0 0.0 0.0 0.0\n";
-  }
-  Lig.close();
-};
-
-void exportclass::YADE() {
-  
-  //================================================
-  
-  BOOST_FOREACH(int t, _particleRow->types()) {
+bool exportclass::LiggghtsIN() {
+  if (_particleRow->sizeUpd()>0) {
+    stringstream ss;
+    //================================================
+    
     std::string _fileNameOut;
     _fileNameOut = _cfg->FNameO();
-    _fileNameOut += ".yade._";
-    _fileNameOut += static_cast<ostringstream*>( &(ostringstream() << t) )->str();
+    _fileNameOut += ".liggghts";
     
-    ofstream Yade (_fileNameOut.c_str());
-    Yade << "#Yade x_y_z_r_matID input-file, type "<< t << '\n';
+    ofstream Lig (_fileNameOut.c_str());
+    Lig << "LIGGGHTS Description\n\n";
+    Lig << _particleRow->sizeUpd() << " atoms\n";
+    Lig << _particleRow->types().size() << " atom types\n\n";       //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~!!!!!!!!!!!!!
+    Lig << _particleRow->centerUpd()(0) - _particleRow->extendsUpd()(0) << " " << _particleRow->centerUpd()(0) + _particleRow->extendsUpd()(0) << " xlo xhi\n";
+    Lig << _particleRow->centerUpd()(1) - _particleRow->extendsUpd()(1) << " " << _particleRow->centerUpd()(1) + _particleRow->extendsUpd()(1) << " ylo yhi\n";
+    Lig << _particleRow->centerUpd()(2) - _particleRow->extendsUpd()(2) << " " << _particleRow->centerUpd()(2) + _particleRow->extendsUpd()(2) << " zlo zhi\n\nAtoms\n\n";
     
     for (unsigned long long z = 0; z<_particleRow->sizeUpd(); z++) {
       std::shared_ptr<particle> p = _particleRow->getPartUpd(z);
-      if (p->type()==t) {
-        Yade << p->c()(0) << " " << p->c()(1)<< " " << p->c()(2) << " " << p->rad() << " " << p->type() <<'\n';
-      }
+      Lig << p->id() << " " << p->type() << " " << p->rad()*2.0 << " " << p->density() << " " << p->c()(0) << " " << p->c()(1)<< " " << p->c()(2) <<'\n';
     }
     
-    Yade.close();
+    Lig <<"\nVelocities\n\n";
+    
+    for (unsigned long long z = 0; z<_particleRow->sizeUpd(); z++) {
+      std::shared_ptr<particle> p = _particleRow->getPartUpd(z);
+      Lig << p->id() << " 0.0 0.0 0.0 0.0 0.0 0.0\n";
+    }
+    Lig.close();
+    return true;
+  } else {
+    return false;
   }
 };
 
-void exportclass::VTK() {
-  ofstream fileVTK;
-  std::string _fileNameVTU;
-
-  _fileNameVTU =  _cfg->FNameO();
-  _fileNameVTU += ".vtu";
-
-  
-  //Export Particles
-  vtkSmartPointer<vtkPoints>  spheresPos = vtkSmartPointer<vtkPoints>::New();
-  vtkSmartPointer<vtkCellArray> spheresCells = vtkSmartPointer<vtkCellArray>::New();
-
-  vtkSmartPointer<vtkDoubleArray> radii = vtkSmartPointer<vtkDoubleArray>::New();
-  radii->SetNumberOfComponents(1);
-  radii->SetName("radii");
-
-  vtkSmartPointer<vtkDoubleArray> density = vtkSmartPointer<vtkDoubleArray>::New();
-  density->SetNumberOfComponents(1);
-  density->SetName("density");
-  
-  vtkSmartPointer<vtkIntArray> spheresId = vtkSmartPointer<vtkIntArray>::New();
-  spheresId->SetNumberOfComponents(1);
-  spheresId->SetName("id");
-
-  vtkSmartPointer<vtkIntArray> spheresType = vtkSmartPointer<vtkIntArray>::New();
-  spheresType->SetNumberOfComponents(1);
-  spheresType->SetName("type");
-  
-  
-  vtkSmartPointer<vtkUnstructuredGrid> spheresUg = vtkSmartPointer<vtkUnstructuredGrid>::New();
-  
-  
+bool exportclass::YADE() {
+  if (_particleRow->sizeUpd()>0) {
+    //================================================
     
-    for (unsigned long long z = 0; z<_particleRow->sizeUpd(); z++) {
-      std::shared_ptr<particle> partTemp = _particleRow->getPartUpd(z);
+    BOOST_FOREACH(int t, _particleRow->types()) {
+      std::string _fileNameOut;
+      _fileNameOut = _cfg->FNameO();
+      _fileNameOut += ".yade._";
+      _fileNameOut += static_cast<ostringstream*>( &(ostringstream() << t) )->str();
       
+      ofstream Yade (_fileNameOut.c_str());
+      Yade << "#Yade x_y_z_r_matID input-file, type "<< t << '\n';
       
-      vtkIdType pid[1];
-      pid[0] = spheresPos->InsertNextPoint(partTemp->c()[0], partTemp->c()[1], partTemp->c()[2]);
-      radii->InsertNextValue(partTemp->rad());
-      density->InsertNextValue(partTemp->density());
-      spheresId->InsertNextValue(partTemp->id());
-      spheresType->InsertNextValue(partTemp->type());
-      spheresCells->InsertNextCell(1,pid);
+      for (unsigned long long z = 0; z<_particleRow->sizeUpd(); z++) {
+        std::shared_ptr<particle> p = _particleRow->getPartUpd(z);
+        if (p->type()==t) {
+          Yade << p->c()(0) << " " << p->c()(1)<< " " << p->c()(2) << " " << p->rad() << " " << p->type() <<'\n';
+        }
+      }
+      
+      Yade.close();
     }
-    
-    
-    spheresUg->SetPoints(spheresPos);
-    spheresUg->SetCells(VTK_VERTEX, spheresCells);
-    spheresUg->GetPointData()->AddArray(radii);
-    spheresUg->GetPointData()->AddArray(density);
-    spheresUg->GetPointData()->AddArray(spheresId);
-    spheresUg->GetPointData()->AddArray(spheresType);
-    
-  vtkSmartPointer<vtkXMLUnstructuredGridWriter> writer = vtkSmartPointer<vtkXMLUnstructuredGridWriter>::New();
-  writer->SetDataModeToAscii();
-  writer->SetInput(spheresUg);
+    return true;
+  } else {
+    return false;
+  }
+};
+
+bool exportclass::VTK() {
+  if (_particleRow->sizeUpd()>0) {
+    ofstream fileVTK;
+    std::string _fileNameVTU;
   
-  writer->SetFileName(_fileNameVTU.c_str());
-  writer->Write();
+    _fileNameVTU =  _cfg->FNameO();
+    _fileNameVTU += ".vtu";
+  
+    
+    //Export Particles
+    vtkSmartPointer<vtkPoints>  spheresPos = vtkSmartPointer<vtkPoints>::New();
+    vtkSmartPointer<vtkCellArray> spheresCells = vtkSmartPointer<vtkCellArray>::New();
+  
+    vtkSmartPointer<vtkDoubleArray> radii = vtkSmartPointer<vtkDoubleArray>::New();
+    radii->SetNumberOfComponents(1);
+    radii->SetName("radii");
+  
+    vtkSmartPointer<vtkDoubleArray> density = vtkSmartPointer<vtkDoubleArray>::New();
+    density->SetNumberOfComponents(1);
+    density->SetName("density");
+    
+    vtkSmartPointer<vtkIntArray> spheresId = vtkSmartPointer<vtkIntArray>::New();
+    spheresId->SetNumberOfComponents(1);
+    spheresId->SetName("id");
+  
+    vtkSmartPointer<vtkIntArray> spheresType = vtkSmartPointer<vtkIntArray>::New();
+    spheresType->SetNumberOfComponents(1);
+    spheresType->SetName("type");
+    
+    
+    vtkSmartPointer<vtkUnstructuredGrid> spheresUg = vtkSmartPointer<vtkUnstructuredGrid>::New();
+    
+    
+      
+      for (unsigned long long z = 0; z<_particleRow->sizeUpd(); z++) {
+        std::shared_ptr<particle> partTemp = _particleRow->getPartUpd(z);
+        
+        
+        vtkIdType pid[1];
+        pid[0] = spheresPos->InsertNextPoint(partTemp->c()[0], partTemp->c()[1], partTemp->c()[2]);
+        radii->InsertNextValue(partTemp->rad());
+        density->InsertNextValue(partTemp->density());
+        spheresId->InsertNextValue(partTemp->id());
+        spheresType->InsertNextValue(partTemp->type());
+        spheresCells->InsertNextCell(1,pid);
+      }
+      
+      
+      spheresUg->SetPoints(spheresPos);
+      spheresUg->SetCells(VTK_VERTEX, spheresCells);
+      spheresUg->GetPointData()->AddArray(radii);
+      spheresUg->GetPointData()->AddArray(density);
+      spheresUg->GetPointData()->AddArray(spheresId);
+      spheresUg->GetPointData()->AddArray(spheresType);
+      
+    vtkSmartPointer<vtkXMLUnstructuredGridWriter> writer = vtkSmartPointer<vtkXMLUnstructuredGridWriter>::New();
+    writer->SetDataModeToAscii();
+    writer->SetInput(spheresUg);
+    
+    writer->SetFileName(_fileNameVTU.c_str());
+    writer->Write();
+    return true;
+  } else {
+    return false;
+  }
 };
 

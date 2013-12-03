@@ -56,7 +56,7 @@ class exportclass {
     
   public:
     exportclass(std::shared_ptr<configopt>, std::shared_ptr <particleRow>);
-    void VTK();
-    void LiggghtsIN();
-    void YADE();
+    bool VTK();
+    bool LiggghtsIN();
+    bool YADE();
 };
